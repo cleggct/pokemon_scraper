@@ -16,11 +16,8 @@ class PokemonSpider(scrapy.Spider):
         }
     
     def parse(self, response):
-        for entry in response.css('a.pokedex-item'):
-            
-            text = entry.css('::text').getall()
-            
+        for entry in response.css('a.pokedex-item'):  
             yield {
-                'name' : text[1],
-                'number' : text[0]
+                'name' : entry.re('<br>(\w+)<br>'),
+                'number' : entry.re('<br>#(\d+)<br>')
                 }
